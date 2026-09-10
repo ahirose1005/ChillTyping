@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="タイピングでコインを集め、自分だけの部屋を育てるゲーム ChillTyping"
+    />
+    <title>ChillTyping | タイピングで部屋を育てるゲーム</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app-v2.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="ChillTyping ホーム">
+        <span class="brand-mark" aria-hidden="true">⌨</span>
+        <span>Chill<span>Typing</span></span>
+      </a>
+
+      <nav class="main-nav" aria-label="メインメニュー">
+        <button class="nav-button active" type="button" data-view="home">⌂ <span>マイルーム</span></button>
+        <button class="nav-button" type="button" data-view="shop">▦ <span>ショップ</span></button>
+      </nav>
+
+      <div class="topbar-actions">
+        <div class="wallet" aria-label="所持コイン">
+          <span class="coin" aria-hidden="true">●</span>
+          <strong id="coin-count">0</strong>
+        </div>
+        <button id="sound-toggle" class="icon-button" type="button" aria-label="効果音を切り替える">♫</button>
+        <button id="reset-button" class="icon-button" type="button" aria-label="セーブデータをリセットする">↻</button>
+      </div>
+    </header>
+
+    <main id="home-view" class="app-shell view active-view">
+      <section class="room-panel" aria-labelledby="room-title">
+        <div class="section-heading room-heading">
+          <div>
+            <p class="eyebrow">MY COZY SPACE</p>
+            <h1 id="room-title">あなたの部屋</h1>
+          </div>
+          <div class="room-heading-actions">
+            <span id="room-level" class="level-badge">ROOM LV. 1</span>
+            <button id="inventory-toggle" class="inventory-toggle" type="button" aria-expanded="false">
+              <span aria-hidden="true">▣</span> インベントリ <b id="inventory-count">0</b>
+            </button>
+          </div>
+        </div>
+
+        <div id="room" class="room" aria-label="購入した家具が飾られる部屋">
+          <div class="window" aria-hidden="true">
+            <span class="cloud cloud-one"></span>
+            <span class="cloud cloud-two"></span>
+            <span class="window-glow"></span>
+          </div>
+          <div class="wall-art default-art" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <div id="achievement-wall" class="achievement-wall" aria-label="獲得した実績の額縁"></div>
+          <div class="shelf" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="plant room-item" data-item="plant" aria-hidden="true">
+            <span class="leaf leaf-a"></span><span class="leaf leaf-b"></span><span class="leaf leaf-c"></span>
+            <span class="pot"></span>
+          </div>
+          <div class="lamp room-item" data-item="lamp" aria-hidden="true">
+            <span class="lamp-glow"></span><span class="lamp-shade"></span><span class="lamp-pole"></span><span class="lamp-base"></span>
+          </div>
+          <div class="cat room-item" data-item="cat" aria-hidden="true">
+            <span class="cat-tail"></span><span class="cat-body"></span><span class="cat-head">•ᴗ•</span>
+          </div>
+          <div class="rug room-item" data-item="rug" aria-hidden="true"></div>
+          <div id="collectible-layer" class="collectible-layer" aria-hidden="true"></div>
+          <div class="desk" aria-hidden="true">
+            <div class="monitor"><span id="monitor-text">ready_</span></div>
+            <div class="keyboard"><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="desk-top"></div>
+            <div class="desk-leg left"></div><div class="desk-leg right"></div>
+          </div>
+          <div class="chair" aria-hidden="true"><span></span></div>
+          <div class="floor-line" aria-hidden="true"></div>
+          <p id="empty-room-message" class="room-hint">インベントリからアイテムを配置しよう</p>
+          <p id="room-edit-hint" class="room-edit-hint">アイテムをドラッグして好きな場所へ移動できます</p>
+        </div>
+
+        <div id="inventory-drawer" class="inventory-drawer" hidden>
+          <div class="inventory-header">
+            <div>
+              <p class="eyebrow">MY COLLECTION</p>
+              <h2>インベントリ</h2>
+            </div>
+            <button id="inventory-close" class="inventory-close" type="button" aria-label="インベントリを閉じる">×</button>
+          </div>
+          <div id="inventory-tabs" class="inventory-tabs" role="tablist" aria-label="インベントリカテゴリ"></div>
+          <div id="inventory-list" class="inventory-list"></div>
+          <p id="inventory-empty" class="inventory-empty" hidden>このカテゴリのアイテムはまだありません。</p>
+        </div>
+      </section>
+
+      <section class="game-panel" aria-labelledby="game-title">
+        <div class="section-heading game-heading">
+          <div>
+            <p class="eyebrow">TODAY'S SESSION</p>
+            <h2 id="game-title">リラックスして、タイプしよう。</h2>
+          </div>
+          <button id="new-phrase-button" class="text-button" type="button">次の文章 ↗</button>
+        </div>
+
+        <div class="stats" aria-label="タイピング成績">
+          <div><span>WPM</span><strong id="wpm">0</strong></div>
+          <div><span>正確性</span><strong id="accuracy">100%</strong></div>
+          <div><span>コンボ</span><strong id="combo">0</strong></div>
+          <div><span>獲得</span><strong class="earned"><span class="coin small">●</span><span id="earned">0</span></strong></div>
+        </div>
+
+        <div class="typing-card">
+          <div class="typing-meta">
+            <span id="phrase-category">CHILL WORDS</span>
+            <span><kbd>Enter</kbd> 次へ</span>
+          </div>
+          <p id="phrase" class="phrase" aria-label="入力する文章"></p>
+          <label class="sr-only" for="typing-input">上の英文を入力してください</label>
+          <input
+            id="typing-input"
+            class="typing-input"
+            type="text"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+            placeholder="ここからタイピングを始めよう..."
+          />
+          <div class="progress-track" aria-hidden="true"><span id="typing-progress"></span></div>
+          <p id="typing-message" class="typing-message" aria-live="polite">正しいキーでコインをゲット</p>
+        </div>
+      </section>
+
+    </main>
+
+    <main id="shop-view" class="shop-scene view" hidden>
+      <section class="shop-hero">
+        <div>
+          <p class="eyebrow">COZY SHOP</p>
+          <h1>暮らしを、好きなもので満たそう。</h1>
+          <p>タイピングで集めたコインを使って、あなただけの部屋を作れます。</p>
+        </div>
+        <div class="shop-progress">
+          <span>COLLECTION</span>
+          <strong id="owned-count">0 / 0</strong>
+          <div class="collection-track"><span id="collection-progress"></span></div>
+        </div>
+      </section>
+
+      <section class="catalog" aria-labelledby="shop-title">
+        <div class="catalog-heading">
+          <div>
+            <p class="eyebrow">ITEM CATALOG</p>
+            <h2 id="shop-title">ショップ</h2>
+          </div>
+          <button class="back-room-button" type="button" data-view="home">← 部屋に戻る</button>
+        </div>
+
+        <div id="shop-tabs" class="shop-tabs" role="tablist" aria-label="商品カテゴリ"></div>
+        <div class="catalog-toolbar">
+          <p id="category-description"></p>
+          <span id="category-count"></span>
+        </div>
+        <div id="shop-list" class="shop-grid" role="tabpanel"></div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <aside id="achievement-popup" class="achievement-popup" role="status" aria-live="polite" aria-hidden="true">
+      <div class="achievement-shine" aria-hidden="true"></div>
+      <div class="achievement-popup-frame">
+        <img id="achievement-popup-image" src="" alt="" />
+      </div>
+      <div class="achievement-popup-copy">
+        <p>ACHIEVEMENT UNLOCKED</p>
+        <h2 id="achievement-popup-title"></h2>
+        <span id="achievement-popup-description"></span>
+        <strong>報酬：記念の額縁がインベントリに追加されました</strong>
+      </div>
+      <button id="achievement-popup-close" type="button" aria-label="実績通知を閉じる">×</button>
+    </aside>
+  </body>
+</html>
