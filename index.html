@@ -9,6 +9,7 @@
     />
     <title>ChillTyping | タイピングで部屋を育てるゲーム</title>
     <link rel="stylesheet" href="styles.css" />
+    <script src="phrases.js" defer></script>
     <script src="app-v2.js" defer></script>
   </head>
   <body>
@@ -119,6 +120,7 @@
             <span><kbd>Enter</kbd> 次へ</span>
           </div>
           <p id="phrase" class="phrase" aria-label="入力する文章"></p>
+          <p id="phrase-meaning" class="phrase-meaning" aria-live="polite"></p>
           <label class="sr-only" for="typing-input">上の英文を入力してください</label>
           <input
             id="typing-input"

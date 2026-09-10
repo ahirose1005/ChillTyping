@@ -389,6 +389,7 @@ kbd { padding: 2px 5px; border: 1px solid #d3d3ca; border-bottom-width: 2px; bor
 .phrase .correct { color: var(--green-dark); }
 .phrase .incorrect { color: #cb604e; border-bottom: 2px solid #cb604e; background: #fae1db; }
 .phrase .current { color: var(--ink); border-bottom: 2px solid var(--peach); }
+.phrase-meaning { min-height: 19px; margin: -7px 0 16px; color: var(--muted); font-size: 12px; letter-spacing: .02em; }
 .typing-input { width: 100%; padding: 13px 16px; border: 1px solid #d8d9d1; border-radius: 11px; outline: none; color: var(--ink); background: #faf9f4; font: 15px "DM Mono", monospace; transition: 180ms; }
 .typing-input:focus { border-color: var(--green); box-shadow: 0 0 0 4px rgba(104,143,120,.1); background: #fff; }
 .typing-input.error { animation: shake 180ms linear; border-color: #c85f4d; }

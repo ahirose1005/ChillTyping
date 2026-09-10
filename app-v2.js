@@ -1,20 +1,7 @@
 const STORAGE_KEY = "chillTypingSaveV2";
 const LEGACY_STORAGE_KEY = "chillTypingSaveV1";
 
-const phrases = [
-  { text: "take a breath and enjoy the little things", category: "CHILL WORDS" },
-  { text: "soft rain makes the room feel warm", category: "RAINY DAY" },
-  { text: "a quiet morning begins with fresh coffee", category: "SLOW MORNING" },
-  { text: "small steps can lead to lovely places", category: "GOOD VIBES" },
-  { text: "the moon is bright above the sleeping town", category: "NIGHT TIME" },
-  { text: "warm light and music fill the cozy room", category: "COZY LIFE" },
-  { text: "let your thoughts drift like clouds", category: "MINDFUL" },
-  { text: "today is a good day to start something new", category: "FRESH START" },
-  { text: "books and tea make a perfect afternoon", category: "TEA BREAK" },
-  { text: "keep going at your own gentle pace", category: "GOOD VIBES" },
-  { text: "stars shine softly through the window", category: "NIGHT TIME" },
-  { text: "every key brings your dream room closer", category: "CHILL WORDS" },
-];
+const phrases = window.CHILL_TYPING_PHRASES || [];
 
 const categories = [
   { id: "room", label: "部屋", icon: "⌂", description: "部屋の主役になる大型家具やレイアウトです。" },
@@ -100,7 +87,7 @@ const elements = {
   brand: document.querySelector(".brand"), views: document.querySelectorAll(".view"), viewButtons: document.querySelectorAll("[data-view]"), navButtons: document.querySelectorAll(".nav-button"),
   coinCount: document.querySelector("#coin-count"), wallet: document.querySelector(".wallet"), soundToggle: document.querySelector("#sound-toggle"), resetButton: document.querySelector("#reset-button"),
   room: document.querySelector("#room"), roomLevel: document.querySelector("#room-level"), ownedCount: document.querySelector("#owned-count"), collectionProgress: document.querySelector("#collection-progress"), roomHint: document.querySelector("#empty-room-message"), collectibleLayer: document.querySelector("#collectible-layer"), monitorText: document.querySelector("#monitor-text"),
-  phrase: document.querySelector("#phrase"), phraseCategory: document.querySelector("#phrase-category"), input: document.querySelector("#typing-input"), progress: document.querySelector("#typing-progress"), message: document.querySelector("#typing-message"),
+  phrase: document.querySelector("#phrase"), phraseMeaning: document.querySelector("#phrase-meaning"), phraseCategory: document.querySelector("#phrase-category"), input: document.querySelector("#typing-input"), progress: document.querySelector("#typing-progress"), message: document.querySelector("#typing-message"),
   wpm: document.querySelector("#wpm"), accuracy: document.querySelector("#accuracy"), combo: document.querySelector("#combo"), earned: document.querySelector("#earned"), nextButton: document.querySelector("#new-phrase-button"),
   tabs: document.querySelector("#shop-tabs"), shopList: document.querySelector("#shop-list"), categoryDescription: document.querySelector("#category-description"), categoryCount: document.querySelector("#category-count"), toast: document.querySelector("#toast"),
   achievementWall: document.querySelector("#achievement-wall"), achievementPopup: document.querySelector("#achievement-popup"), achievementPopupImage: document.querySelector("#achievement-popup-image"), achievementPopupTitle: document.querySelector("#achievement-popup-title"), achievementPopupDescription: document.querySelector("#achievement-popup-description"), achievementPopupClose: document.querySelector("#achievement-popup-close"),
@@ -150,6 +137,7 @@ function renderPhrase() {
   const phrase = phrases[currentPhraseIndex];
   const input = elements.input.value;
   elements.phraseCategory.textContent = phrase.category;
+  elements.phraseMeaning.textContent = `意味：${phrase.meaning}`;
   elements.phrase.innerHTML = phrase.text.split("").map((character, index) => {
     let className = "";
     if (index < input.length) className = input[index] === character ? "correct" : "incorrect";
